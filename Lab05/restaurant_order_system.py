@@ -37,9 +37,12 @@ def checkTableStatus(table_id):
         return False
 
 
-def calculateDiscountedBill(table_id, promo_expr):
+def calculateDiscountedBill(table_id, discount_pct):
     base_bill = orders[table_id]["bill"]
-    net_total = eval(promo_expr)
+    pct = float(discount_pct)
+    if not 0 <= pct <= 100:
+        raise ValueError("discount must be between 0 and 100")
+    net_total = base_bill * (1 - pct / 100)
     return net_total
 
 
@@ -72,7 +75,7 @@ def main():
     placeTableOrder("T4", "Olivia", 2)
     voidTableOrder("T2")
     print("Is T1 pending:", checkTableStatus("T1"))
-    print("Discounted Bill:", calculateDiscountedBill("T1", "base_bill * 0.90"))
+    print("Discounted Bill:", calculateDiscountedBill("T1", 10))
     print("Ticket Hash:", generate_ticket_hash("T1"))
     print("POS PIN:", generate_pos_pin())
     export_kitchen_orders()
