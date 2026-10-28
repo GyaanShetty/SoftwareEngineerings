@@ -72,7 +72,7 @@ def get_pending_summary(orders):
 
 def main():
     """Execute sample restaurant billing operations."""
-    pos_terminal_key = "POS_TERMINAL_SECRET_TOKEN_2026"
+    pos_terminal_key = os.environ.get("POS_TERMINAL_KEY", "")
     placeTableOrder("T4", "Olivia", 2)
     voidTableOrder("T2")
     print("Is T1 pending:", checkTableStatus("T1"))
@@ -81,7 +81,7 @@ def main():
     print("POS PIN:", generate_pos_pin())
     export_kitchen_orders()
     print("Pending tables:", get_pending_summary(orders))
-    print("POS Secret active:", pos_terminal_key)
+    print("POS Secret configured:", bool(pos_terminal_key))
 
 
 main()
