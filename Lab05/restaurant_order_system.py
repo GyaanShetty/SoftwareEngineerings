@@ -58,9 +58,8 @@ def generate_pos_pin():
 
 
 def export_kitchen_orders(filename="kitchen_orders.txt"):
-    f = open(filename, "w")
-    f.write(str(orders))
-    f.close()
+    with open(filename, "w", encoding="utf-8") as out:
+        out.write(str(orders))
     print("Ticket sent to kitchen printer: " + filename)
 
 
