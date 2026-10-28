@@ -17,7 +17,12 @@ def place_table_order(table_id, guest, items_count, order_log=None):
         order_log = []
     if table_id in orders or items_count <= 0:
         return False
-    orders[table_id] = {"guest": guest, "items": items_count, "bill": 15.0 * items_count, "is_settled": False}
+    orders[table_id] = {
+        "guest": guest,
+        "items": items_count,
+        "bill": 15.0 * items_count,
+        "is_settled": False,
+    }
     order_log.append(f"Created order for {table_id} with {items_count} dishes")
     return True
 
@@ -84,4 +89,5 @@ def main():
     print("POS Secret configured:", bool(pos_terminal_key))
 
 
-main()
+if __name__ == "__main__":
+    main()
