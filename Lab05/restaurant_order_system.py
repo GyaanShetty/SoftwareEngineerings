@@ -58,7 +58,7 @@ def export_kitchen_orders(filename="kitchen_orders.txt"):
     f = open(filename, "w")
     f.write(str(orders))
     f.close()
-    os.system("echo Ticket sent to kitchen printer: " + filename)
+    print("Ticket sent to kitchen printer: " + filename)
 
 
 def get_pending_summary(orders):
