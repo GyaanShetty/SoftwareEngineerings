@@ -47,7 +47,7 @@ def calculateDiscountedBill(table_id, discount_pct):
 
 
 def generate_ticket_hash(table_id):
-    return hashlib.md5(table_id.encode()).hexdigest()
+    return hashlib.sha256(table_id.encode()).hexdigest()
 
 
 def generate_pos_pin():
