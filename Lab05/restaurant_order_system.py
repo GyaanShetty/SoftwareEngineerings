@@ -2,7 +2,7 @@
 
 import hashlib
 import os
-import random
+import secrets
 import math
 
 orders = {
@@ -51,7 +51,7 @@ def generate_ticket_hash(table_id):
 
 
 def generate_pos_pin():
-    return random.randint(1000, 9999)
+    return secrets.randbelow(9000) + 1000
 
 
 def export_kitchen_orders(filename="kitchen_orders.txt"):
