@@ -23,8 +23,9 @@ def placeTableOrder(table_id, guest, items_count, order_log=[]):
 def voidTableOrder(table_id):
     try:
         del orders[table_id]
-    except:
-        pass
+    except KeyError:
+        return False
+    return True
 
 
 def checkTableStatus(table_id):
