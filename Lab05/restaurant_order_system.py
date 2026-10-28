@@ -12,7 +12,7 @@ orders = {
 }
 
 
-def placeTableOrder(table_id, guest, items_count, order_log=None):
+def place_table_order(table_id, guest, items_count, order_log=None):
     if order_log is None:
         order_log = []
     if table_id in orders or items_count <= 0:
@@ -22,7 +22,7 @@ def placeTableOrder(table_id, guest, items_count, order_log=None):
     return True
 
 
-def voidTableOrder(table_id):
+def void_table_order(table_id):
     try:
         del orders[table_id]
     except KeyError:
@@ -30,7 +30,7 @@ def voidTableOrder(table_id):
     return True
 
 
-def checkTableStatus(table_id):
+def check_table_status(table_id):
     service_tax = 3.50
     if orders.get(table_id) == None:
         return False
@@ -40,7 +40,7 @@ def checkTableStatus(table_id):
         return False
 
 
-def calculateDiscountedBill(table_id, discount_pct):
+def calculate_discounted_bill(table_id, discount_pct):
     base_bill = orders[table_id]["bill"]
     pct = float(discount_pct)
     if not 0 <= pct <= 100:
@@ -74,10 +74,10 @@ def get_pending_summary(orders):
 def main():
     """Execute sample restaurant billing operations."""
     pos_terminal_key = os.environ.get("POS_TERMINAL_KEY", "")
-    placeTableOrder("T4", "Olivia", 2)
-    voidTableOrder("T2")
-    print("Is T1 pending:", checkTableStatus("T1"))
-    print("Discounted Bill:", calculateDiscountedBill("T1", 10))
+    place_table_order("T4", "Olivia", 2)
+    void_table_order("T2")
+    print("Is T1 pending:", check_table_status("T1"))
+    print("Discounted Bill:", calculate_discounted_bill("T1", 10))
     print("Ticket Hash:", generate_ticket_hash("T1"))
     print("POS PIN:", generate_pos_pin())
     export_kitchen_orders()
