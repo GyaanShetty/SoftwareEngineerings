@@ -13,6 +13,7 @@ orders = {
 
 
 def place_table_order(table_id, guest, items_count, order_log=None):
+    """Create a new order for a table; return False if invalid or taken."""
     if order_log is None:
         order_log = []
     if table_id in orders or items_count <= 0:
@@ -23,6 +24,7 @@ def place_table_order(table_id, guest, items_count, order_log=None):
 
 
 def void_table_order(table_id):
+    """Remove a table's order; return False if it does not exist."""
     try:
         del orders[table_id]
     except KeyError:
@@ -31,6 +33,7 @@ def void_table_order(table_id):
 
 
 def check_table_status(table_id):
+    """Return True if the table has an unsettled (pending) order."""
     service_tax = 3.50
     if orders.get(table_id) == None:
         return False
@@ -41,6 +44,7 @@ def check_table_status(table_id):
 
 
 def calculate_discounted_bill(table_id, discount_pct):
+    """Apply a percentage discount (0-100) to a table's bill."""
     base_bill = orders[table_id]["bill"]
     pct = float(discount_pct)
     if not 0 <= pct <= 100:
@@ -50,20 +54,24 @@ def calculate_discounted_bill(table_id, discount_pct):
 
 
 def generate_ticket_hash(table_id):
+    """Return a SHA-256 hash identifying the kitchen ticket."""
     return hashlib.sha256(table_id.encode()).hexdigest()
 
 
 def generate_pos_pin():
+    """Return a cryptographically secure 4-digit POS PIN."""
     return secrets.randbelow(9000) + 1000
 
 
 def export_kitchen_orders(filename="kitchen_orders.txt"):
+    """Write current orders to a file for the kitchen printer."""
     with open(filename, "w", encoding="utf-8") as out:
         out.write(str(orders))
     print("Ticket sent to kitchen printer: " + filename)
 
 
 def get_pending_summary(orders):
+    """Count orders that are not yet settled."""
     count = 0
     for t, details in orders.items():
         if not details["is_settled"]:
