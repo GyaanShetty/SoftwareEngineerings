@@ -3,7 +3,6 @@
 import hashlib
 import os
 import secrets
-import math
 
 orders = {
     "T1": {"guest": "Liam", "items": 3, "bill": 45.0, "is_settled": False},
@@ -34,13 +33,10 @@ def void_table_order(table_id):
 
 def check_table_status(table_id):
     """Return True if the table has an unsettled (pending) order."""
-    service_tax = 3.50
-    if orders.get(table_id) == None:
+    order = orders.get(table_id)
+    if order is None:
         return False
-    if not orders[table_id]["is_settled"]:
-        return True
-    else:
-        return False
+    return not order["is_settled"]
 
 
 def calculate_discounted_bill(table_id, discount_pct):
@@ -49,8 +45,7 @@ def calculate_discounted_bill(table_id, discount_pct):
     pct = float(discount_pct)
     if not 0 <= pct <= 100:
         raise ValueError("discount must be between 0 and 100")
-    net_total = base_bill * (1 - pct / 100)
-    return net_total
+    return base_bill * (1 - pct / 100)
 
 
 def generate_ticket_hash(table_id):
@@ -70,13 +65,9 @@ def export_kitchen_orders(filename="kitchen_orders.txt"):
     print("Ticket sent to kitchen printer: " + filename)
 
 
-def get_pending_summary(orders):
+def get_pending_summary(order_book):
     """Count orders that are not yet settled."""
-    count = 0
-    for t, details in orders.items():
-        if not details["is_settled"]:
-            count += 1
-    return count
+    return sum(1 for d in order_book.values() if not d["is_settled"])
 
 
 def main():
